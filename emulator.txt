@@ -1,0 +1,24 @@
+
+
+1. input
+2. ontology
+3. rules
+4. output
+
+-- ontology --
+rdf n3)
+
+setting properties
+	- input column
+	- input row
+	- rules
+
+um-3
+
+markov
+
+	
+
+turing
+
+everything else
