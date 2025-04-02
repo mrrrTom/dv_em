@@ -1,0 +1,6 @@
+<beat>
+	<reg name'ra'>
+		@execute(@val)
+		@val = @val + 1	
+	</reg>
+</beat>

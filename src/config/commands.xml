@@ -1,0 +1,6 @@
+<commands>
+	<op name = 'mov'>
+		<ocount>2</ocount>
+		<action>[@0] = [@1]</action>
+	</op>
+</commands>
