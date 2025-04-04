@@ -1,9 +1,9 @@
-#include <iostream>
-#include "emulator.h"
+#include "emulator.hpp"
+#include "configuration.hpp"
 
-emulator::emulator(std::string path) {
+emulator::emulator(const char *path) {
 	configuration _config(path);
-	//view _view(config);
+	view _view(_config);
 	//view.print();
 	//executor = new executor(config);
 }

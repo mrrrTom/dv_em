@@ -1,5 +1,5 @@
 #include <iostream>
-#include "emulator.h"
+#include "emulator.hpp"
 
 
 int main(int argc, char *argv[]) {
