@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<registers>
 		<reg name='ra'>9</reg>
@@ -6,7 +7,7 @@
 	<csize>5</csize>
 	<osize>9</osize>
 	<ocount>3</ocount>
-	<start path='temp/start.xml'/>
-	<beat path='temp/beat.xml'/>
-	<commandos path='temp/commands.xml'/>
+	<start path='/home/tom/source/emulator/src/config/start.xml'/>
+	<beat path='/home/tom/source/emulator/src/config/beat.xml'/>
+	<commandos path='/home/tom/source/emulator/src/config/commands.xml'/>
 </config>

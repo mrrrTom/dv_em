@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 	
-	emulator *e = new emulator(argv[0]);
+	Emulator::emulator *e = new Emulator::emulator(argv[1]);
 	bool run = true;
 	e->run();
 	while (run) {
