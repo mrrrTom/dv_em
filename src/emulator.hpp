@@ -10,13 +10,14 @@
 namespace Emulator {
 	class emulator {
 		private:
-			configuration _config;
-			view _view;
+			std::unordered_map<char, void (*)(int*)> *_kernel_commands;
+			//view _view;
 		public:
 			emulator(const char *path);
 			void run();
-			void process(char symb);
+			void process(char symb, int *args);
 			void stop(std::string path);
+			~emulator();
 	};
 }
 #endif

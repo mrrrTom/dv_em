@@ -1,7 +1,8 @@
 #include <iostream>
 #include "emulator.hpp"
-
-
+//https://unix.stackexchange.com/a/617600
+//stty raw (without new line and etc) - stty sane https://www.ibm.com/docs/en/zvm/7.3?topic=commands-stty-set-display-terminal-options
+//
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		//ToDo exception
@@ -18,7 +19,8 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 		
-		e->process(key);
+		int args[2] { 5, 8};
+		e->process(key, args);
 	}
 
 	e->stop(argv[1]);

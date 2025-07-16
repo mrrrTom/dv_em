@@ -8,7 +8,7 @@
 #include <iostream>
 namespace Emulator {
 	struct configuration{
-		std::unordered_map<std::string, pregister *> registers;	
+		std::unordered_map<std::string, unsigned char> registers;	
 
 		unsigned char adress_size;
 		unsigned char cop_size;

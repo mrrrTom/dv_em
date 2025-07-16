@@ -1,0 +1,17 @@
+Program: {
+	shape: class
+	
+	main(arg int): (result int)
+}
+
+Emulator_hpp: {
+	shape: class
+
+	ctor()
+	process(symb char)
+}
+
+Program -- Emulator_hpp: owns {
+ source-arrowhead: 1..*
+ target-arrowhead: 1..*
+ }

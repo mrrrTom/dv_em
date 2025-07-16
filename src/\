@@ -30,7 +30,9 @@ namespace Emulator {
 			unsigned char regSize = (unsigned char)(std::stoi(std::string(reg -> value())));
 			rapidxml::xml_attribute<> *regAttr = reg -> first_attribute("name");
 			std::string regName = regAttr -> value();
-			registers.insert({regName, regSize});
+			if( !registers.insert({regName, regSize}).second) {
+				delete registerObj;
+			}
 			reg = reg -> next_sibling();
 		} while (reg);
 
