@@ -5,6 +5,33 @@
 		- emulator programm 
 		- UM-3 configuration for emulator
 
-	--ATION--
+	--ATIONS & EXPECTATIONS--
+		1. a: start programm, with parameters: "config.xml path", "code path"
+		   e: in console we see start form from config, containing:
+				registers and its values
+				input window
+				output window
+				parsed code
+				command window
+				cursor in command window
+		2. a: print in the command window "r"
+		   e: the code is executed, registers values and output are changes accordingly to the code executed
 
-	--EXPECTATIONS--
+2. Input smth case
+
+	--WE HAVE--
+		- written code for UM-3
+		- emulator programm 
+		- UM-3 configuration for emulator
+
+	--ATIONS & EXPECTATIONS--
+		1. a: start programm, with parameters: "config.xml path", "code path"
+		   e: in console we see start form from config, containing:
+				registers and its values
+				input window
+				output window
+				parsed code
+				command window
+				cursor in command window
+		2. a: print in command window "$ 1" 
+

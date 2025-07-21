@@ -1,17 +1,107 @@
-Program: {
+program: {
 	shape: class
-	
 	main(arg int): (result int)
 }
 
-Emulator_hpp: {
+emulator: {
 	shape: class
-
-	ctor()
-	process(symb char)
 }
 
-Program -- Emulator_hpp: owns {
- source-arrowhead: 1..*
- target-arrowhead: 1..*
- }
+emulator -> program: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+configuration: {
+	shape: class
+}
+
+configuration -> emulator: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+emulatorInstructionsStore: {
+	shape: class
+}
+
+emulator -> emulatorInstructionsStore: uses {
+}
+
+view: {
+	shape: class
+}
+
+view -> emulator: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+memoryManager: {
+	shape: class
+	
+	write(byte int): (result bool)
+	read(): (resutl int)
+	getCursorPosition()
+	setCursorPostion()
+}
+
+memoryManager -> emulator: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+cell: {
+	shape: class
+}
+
+cell -> memoryManager: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+registersManager: {
+	shape: class
+}
+
+registersManager -> emulator: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+pregister: {
+	shape: class
+}
+
+pregister -> registersManager: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+executor: {
+	shape: class
+}
+
+executor -> emulator: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+executor -> memoryManager: uses 
+executor -> registersManager: uses

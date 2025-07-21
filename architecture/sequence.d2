@@ -1,0 +1,34 @@
+direction: right
+base: Base case{
+	shape: sequence_diagram
+	program
+	emulator
+	registersManager
+	pregister
+	configuration
+	memoryManager
+	cell
+	parser
+	executor
+	view
+	emulator starting: {
+		program -> emulator: start("config.xml path", "code path")
+		emulator -> configuration: create
+		emulator -> registersManager: create
+		registersManager -> pregister: create
+		emulator -> memoryManager: create(registers)
+		memoryManager -> cell: create
+		emulator -> parser: create
+		emulator -> parser: parse("code path")
+		emulator -> memoryManager: write(parsed code)
+		emulator -> executor: create(memoryManager, registersManager)
+		emulator -> view: create(template, replacers pointers*)
+		emulator -> view: draw()
+	}
+	process command: {
+		program -> emulator: process("r")
+		emulator -> executor: isReady()
+		emulator -> executor: tick()
+		emulator -> view: draw()
+	}
+}
