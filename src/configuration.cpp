@@ -1,6 +1,6 @@
 #include "configuration.hpp"
 
-namespace Emulator {
+namespace emulator {
 	std::unordered_map<std::string, std::string> getStart(const char *path);
 	std::unordered_map<std::string, std::string> getBeat(const char *path);
 	std::unordered_map<std::string, std::string> getCommands(const char *path);

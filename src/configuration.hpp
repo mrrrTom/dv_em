@@ -6,7 +6,7 @@
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
 #include <iostream>
-namespace Emulator {
+namespace emulator {
 	struct configuration{
 		std::unordered_map<std::string, unsigned char> registers;	
 

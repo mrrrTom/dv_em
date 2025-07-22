@@ -2,7 +2,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-namespace Emulator {
+namespace emulator {
 		view::view(std::string *input,
 					std::string *output,
 					std::unordered_map<std::string, std::string *> registers,

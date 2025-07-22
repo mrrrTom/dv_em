@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-namespace Emulator {
+namespace emulator {
 	class emulator {
 		private:
 			std::unordered_map<char, void (*)(int*)> *_kernel_commands;

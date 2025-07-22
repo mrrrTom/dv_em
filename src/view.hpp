@@ -5,7 +5,7 @@
 #include <fstream>
 #include <unordered_map>
 
-namespace Emulator {
+namespace emulator {
 	class view {
 		char vBorderSymb = '|';
 		char hBorderSymb = '-';

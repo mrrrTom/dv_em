@@ -9,18 +9,21 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 	
-	Emulator::emulator *e = new Emulator::emulator(argv[1]);
+	emulator::emulator *e = new emulator::emulator(argv[1]);
 	bool run = true;
 	e->run();
 	while (run) {
-		auto key = std::cin.get();
-		if (key == 3) {
+		std::cout << "started circle" << std::endl;
+		//auto key = std::cin.get();
+		/*if (key == 3) {
 			std::cout << "CTLR + C pressed";
 			break;
-		}
+		}*/
 		
-		int args[2] { 5, 8};
-		e->process(key, args);
+		std::string input;
+		std::cin >> input;
+		e->process(input[0], input.substr(2));
+		std::cout << "returned to maint" << std::endl;
 	}
 
 	e->stop(argv[1]);

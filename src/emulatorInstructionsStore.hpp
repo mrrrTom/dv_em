@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <iostream>
 
-namespace Emulator {
+namespace emulator {
 	std::unordered_map<char, void (*)(int*)> GetEmulatorInstructions();
 }
 
