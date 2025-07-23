@@ -16,6 +16,22 @@ emulator -> program: {
 
 configuration: {
 	shape: class
+	
+	field: cellScheme _memModel
+}
+
+cellScheme: {
+	shape: class
+
+	field: commandBits # [start, end]
+	field: argumentsBits # [start, end]
+}
+
+cellScheme -> configuration: {
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
 }
 
 configuration -> emulator: {
@@ -48,11 +64,11 @@ view -> emulator: {
 
 memoryManager: {
 	shape: class
-	
 	write(byte int): (result bool)
 	read(): (resutl int)
 	getCursorPosition()
 	setCursorPostion()
+	enumerate(): (cells iterator<cell>)
 }
 
 memoryManager -> emulator: {
@@ -64,6 +80,16 @@ memoryManager -> emulator: {
 
 cell: {
 	shape: class
+	field: _commandResolver
+	field: _argumentsResolver
+
+	field: _adressSize
+	field: adress
+	field: cellSize #bits
+	field: bits # max number (need compile time check for configuration)
+	
+	resolveCommand(): (cmd int)
+	resolveArguments(): (args int)
 }
 
 cell -> memoryManager: {
@@ -108,3 +134,9 @@ executor -> emulator: {
 
 executor -> memoryManager: uses 
 executor -> registersManager: uses
+
+parser: {
+	shape: class
+}
+
+

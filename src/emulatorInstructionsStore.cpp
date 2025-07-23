@@ -3,6 +3,7 @@
 namespace {
 	void next_step(int *args, emulator::executor) {
 		std::cout << "next_step func" << args[0] << std::endl;
+		emulator::executor.run();
 	}
 }
 
