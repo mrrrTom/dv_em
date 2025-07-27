@@ -1,4 +1,5 @@
-#include "emulatorInstructionsStore.hpp"
+#include "kernelCommandsStore.hpp"
+#include "executor.hpp"
 
 namespace {
 	void next_step(int *args, emulator::executor) {

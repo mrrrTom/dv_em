@@ -4,7 +4,7 @@
 
 namespace emulator {
 	emulator::emulator(const char *path) {
-		_kernel_commands = new std::unordered_map<char, void (*)(int*)>(GetEmulatorInstructions());
+		_commandsStore = new kernelCommandsStore();
 		configuration config(path);
 		//_view(
 		//здесь из конфига и надо создать все потроха эмулятора

@@ -1,142 +1,173 @@
+# ToDo: resolve all types in all classes
+
 program: {
-	shape: class
-	main(arg int): (result int)
+  shape: class
+  main(arg int): (result int)
 }
 
 emulator: {
-	shape: class
+  shape: class
+
+  -_commandsStore: kernelCommandsStore
+
+  +ctor(configPath char\*, codePath char\*)
+  +run()
+  +process(char symb, int\* args)
+  +stop()
+  -destructor()
 }
 
 emulator -> program: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 configuration: {
-	shape: class
-	
-	field: cellScheme _memModel
+  shape: class
+
+  -_memModel: cellSheme
 }
 
 cellScheme: {
-	shape: class
+  shape: class
 
-	field: commandBits # [start, end]
-	field: argumentsBits # [start, end]
+  +commandBits: tuple(unsigned short int, unsigned short int)
+  +argumentsBits: tuple(unsigned short int, unsigned short int)
 }
 
 cellScheme -> configuration: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 configuration -> emulator: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
-emulatorInstructionsStore: {
-	shape: class
+kernelCommandsStore: {
+  shape: class
+
+  resolveCommand(int commandBits): void (*) (int* args, memoryManager mm, registersManager rm, executor e)
 }
 
-emulator -> emulatorInstructionsStore: uses {
-}
+emulator -> kernelCommandsStore: uses
 
-emulatorInstructionsStore -> executor: uses {
-}
+kernelCommandsStore -> executor: uses
 
 view: {
-	shape: class
+  shape: class
 }
 
 view -> emulator: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 memoryManager: {
-	shape: class
-	write(byte int): (result bool)
-	read(): (resutl int)
-	getCursorPosition()
-	setCursorPostion()
-	enumerate(): (cells iterator<cell>)
+  shape: class
+  write(byte int): (result bool)
+  read(): (resutl int)
+  getCursorPosition()
+  setCursorPostion()
+  enumerate(): (cells iterator<cell>)
 }
 
 memoryManager -> emulator: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 cell: {
-	shape: class
-	field: _commandResolver
-	field: _argumentsResolver
+  shape: class
+  field: _commandResolver
+  field: _argumentsResolver
 
-	field: _adressSize
-	field: adress
-	field: cellSize #bits
-	field: bits # max number (need compile time check for configuration)
-	
-	resolveCommand(): (cmd int)
-	resolveArguments(): (args int)
+  field: _adressSize
+  field: adress
+  field: cellSize # bits
+  field: bits # max number (need compile time check for configuration)
+
+  resolveCommand(): (cmd int)
+  resolveArguments(): (args int)
 }
 
 cell -> memoryManager: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 registersManager: {
-	shape: class
+  shape: class
 }
 
 registersManager -> emulator: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 pregister: {
-	shape: class
+  shape: class
 }
 
 pregister -> registersManager: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
 executor: {
-	shape: class
+  shape: class
+  run() # run through all memory & execute every cell command
+  execute(int commandBits)
 }
+
+userCommandsStore: {
+  shape: class
+  resolveCommand(int commandBits): void (*) (int* args, memoryManager mm, registersManager rm)
+}
+
+userCommandsStore -> memoryManager: {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
+}
+
+userCommandsStore -> registersManager: {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
+}
+
+executor -> userCommandsStore: uses
 
 executor -> emulator: {
-	target-arrowhead: {
-		shape: diamond
-		style.filled: true
-	}
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
 
-executor -> memoryManager: uses 
+executor -> memoryManager: uses
 executor -> registersManager: uses
 
 parser: {
-	shape: class
+  shape: class
 }
-
-
