@@ -9,6 +9,9 @@ emulator: {
   shape: class
   -_start_command: void (*) (memory_manager mm, registers_manager rm)
   -_executor: executor
+  -_mm: memory_manager
+  -_rm: registers_manager
+  -_vm: variables_manager
 
   +ctor(char\* configPath, char\* codePath)
   +start()
@@ -24,12 +27,14 @@ emulator -> program: {
   }
 }
 
+# configuration - is class helper for configurating emulator
 configuration\<adressT\>: {
   shape: class
 
   +memory_model: cellSheme
   +registers_model: "registerScheme[]"
-  +start_beat: std::string
+  +variables_model: "variableScheme[]"
+  +start_state: std::string
   +beat: std::strig
   +kernel_commads: std::unordered_map<std::string, std::string>
   +user_commands: std::unordered_map<std::string, std::string>
@@ -37,14 +42,24 @@ configuration\<adressT\>: {
   -destructor()
 }
 
-registerScheme: {
+register_scheme: {
   shape: class
   +name: std::string # key
   +comment: std::string
   +size: unsigned char # 0 -> 256
+  +user_allowed_modes: unsigned char # _wr
 }
 
-cellScheme: {
+variable_scheme: {
+  shape: class
+  +name: std::string # key
+  +comment: std::string
+  +size: unsigned short int
+  +is_visible: bool
+  +format_string: std::string
+}
+
+cell_scheme: {
   shape: class
   # all invariants must be written down  
   +adress_size: unsigned char
@@ -56,14 +71,21 @@ cellScheme: {
   +operand_size: unsigned short int
 }
 
-registerScheme -> "configuration<adressT>": {
+register_scheme -> "configuration<adressT>": {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-cellScheme -> "configuration<adressT>": {
+cell_scheme -> "configuration<adressT>": {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
+}
+
+variable_scheme -> "configuration<adressT>": {
   target-arrowhead: {
     shape: diamond
     style.filled: true
@@ -77,27 +99,16 @@ cellScheme -> "configuration<adressT>": {
   }
 }
 
-view: {
+memory_manager: {
   shape: class
+
+  +set_cursor(unsigned int\[\] adress): bool
+  +write(int\[\] bits, unsigned short int start, unsigned short int bits_count): bool
+  +read(unsigned short int start, unsigned short int bits_count): "int[]"
+  +move_next(): bool
 }
 
-view -> emulator: {
-  target-arrowhead: {
-    shape: diamond
-    style.filled: true
-  }
-}
-
-memoryManager: {
-  shape: class
-  write(byte int): (result bool)
-  read(): (resutl int)
-  getCursorPosition()
-  setCursorPostion()
-  enumerate(): (cells iterator<cell>)
-}
-
-memoryManager -> emulator: {
+memory_manager -> emulator: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
@@ -106,30 +117,65 @@ memoryManager -> emulator: {
 
 cell: {
   shape: class
-  field: _commandResolver
-  field: _argumentsResolver
 
-  field: _adressSize
-  field: adress
-  field: cellSize # bits
-  field: bits # max number (need compile time check for configuration)
+  -_command_first_bit: insigned short int
+  -_command_last_bit: insigned short int
+  -_value_first_bit: insigned short int
+  -_value_last_bit: insigned short int
 
-  resolveCommand(): (cmd int)
-  resolveArguments(): (args int)
+  +adress: "int[]"
+  +value: "int[]"
+  +get_command(): "int[]"
+  +get_operands(): "int[]"
 }
 
-cell -> memoryManager: {
+cell -> memory_manager: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-registersManager: {
+registers_manager: {
   shape: class
+  -_registers: hash_map<std::string, pregister>
+
+  +write(std\:\:string register_name, int\[\] value, unsigned int short register_offset, unsigned int short value_offset): bool
+  +read(std\:\:string register_name, int\[\] \& value, unsigned int short register_offset, unsigned int short result_offset): bool
 }
 
-registersManager -> emulator: {
+variables_manager: {
+  shape: class
+  -_variables: hash_map<std::string, variable>
+
+  +write(std\:\:string var_name, unsigned short int index, unsigned short int var_offset, unsigned short int input_offset, int\[\] value): bool
+  +read(std\:\:string var_name, unsigned short int index, unsigned short int var_offset, unsigned short int input_offset, int\[\] \& value): bool
+}
+
+variable: {
+  shape: class
+
+  -_size: unsigned short int
+  -_depth: unsigned short int
+  -_value: int\[\]\[\]
+  +allowed_user_modes: unsigned char # _wr
+}
+
+variable -> variables_manager: {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
+}
+
+registers_manager -> emulator: {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
+}
+
+variables_manager -> emulator: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
@@ -167,4 +213,15 @@ executor\<operandsT\>: {
 
 parser: {
   shape: class
+}
+
+view: {
+  shape: class
+}
+
+view -> emulator: {
+  target-arrowhead: {
+    shape: diamond
+    style.filled: true
+  }
 }
