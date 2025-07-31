@@ -5,6 +5,10 @@ Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 
+# D2 files
+*.out
+*.svg
+
 # Dump file
 *.stackdump
 
