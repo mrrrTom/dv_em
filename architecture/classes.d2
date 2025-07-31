@@ -1,5 +1,3 @@
-# ToDo: resolve all types in all classes
-
 program: {
   shape: class
   main(arg int): (result int)
@@ -28,7 +26,7 @@ emulator -> program: {
 }
 
 # configuration - is class helper for configurating emulator
-configuration\<adressT\>: {
+configuration: {
   shape: class
 
   +memory_model: cellSheme
@@ -55,6 +53,7 @@ variable_scheme: {
   +name: std::string # key
   +comment: std::string
   +size: unsigned short int
+  +depth: unsigned short int # count in collection if it is not a single value
   +is_visible: bool
   +format_string: std::string
 }
@@ -71,28 +70,28 @@ cell_scheme: {
   +operand_size: unsigned short int
 }
 
-register_scheme -> "configuration<adressT>": {
+register_scheme -> configuration: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-cell_scheme -> "configuration<adressT>": {
+cell_scheme -> configuration: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-variable_scheme -> "configuration<adressT>": {
+variable_scheme -> configuration: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-"configuration<adressT>" -> emulator: {
+configuration -> emulator: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
@@ -139,7 +138,6 @@ cell -> memory_manager: {
 registers_manager: {
   shape: class
   -_registers: hash_map<std::string, pregister>
-
   +write(std\:\:string register_name, int\[\] value, unsigned int short register_offset, unsigned int short value_offset): bool
   +read(std\:\:string register_name, int\[\] \& value, unsigned int short register_offset, unsigned int short result_offset): bool
 }
@@ -147,18 +145,18 @@ registers_manager: {
 variables_manager: {
   shape: class
   -_variables: hash_map<std::string, variable>
-
   +write(std\:\:string var_name, unsigned short int index, unsigned short int var_offset, unsigned short int input_offset, int\[\] value): bool
   +read(std\:\:string var_name, unsigned short int index, unsigned short int var_offset, unsigned short int input_offset, int\[\] \& value): bool
 }
 
 variable: {
   shape: class
-
   -_size: unsigned short int
   -_depth: unsigned short int
   -_value: int\[\]\[\]
   +allowed_user_modes: unsigned char # _wr
+  +write(int\[\]\[\] value, unsigned short int \[\] input_offsets, unsigned short int \[\] value_offsets, unsigned short int depth_offset): bool
+  +read(int\[\]\[\] \& value, unsigned short int \[\] output_offsets, unsigned short int \[\] value_offsets, unsigned short int depth_offset): bool
 }
 
 variable -> variables_manager: {
@@ -184,6 +182,11 @@ variables_manager -> emulator: {
 
 pregister: {
   shape: class
+  -_size: unsigned short int
+  -_value: int\[\]
+  +allowed_user_modes: unsigned char # _wr
+  +write(int\[\] value, unsigned short int input_offset, unsigned short int value_offset): bool
+  +read(int\[\] \& value, unsigned short int output_offset, unsigned short int value_offset): bool
 }
 
 pregister -> registersManager: {
@@ -193,26 +196,38 @@ pregister -> registersManager: {
   }
 }
 
-executor\<operandsT\>: {
+executor: {
   shape: class
-  -_beat_command: void (*) (memory_manager* mm, registers_manager* rm, void (*) (unsigned short int) executre)
-  -_kernel_commands: std::unordered_map<std::string, std::string (*) (memory_manager* mm, registers_manager* rm, void (*) (memory_manager* mm, registers_manager rm) beat_command)
-  +execute(std\:\:string command, operandsT args): std::string
+  -_beat_command: std::unordered_map<std::string, statement\[\]>
+  -_kernel_commands: std::unordered_map<std::string, statement\[\]>
+  +execute(std\:\:string command, int\[\] args): std::string
   +execute(unsigned short int cell_adress)
 }
 
-"executor<operandsT>" -> emulator: {
+executor -> emulator: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
   }
 }
 
-"executor<operandsT>" -> memoryManager: uses
-"executor<operandsT>" -> registersManager: uses
+executor -> memoryManager: uses
+executor -> registersManager: uses
 
-parser: {
+translator: {
   shape: class
+  +translate(std\:\:string command): statement\[\]
+  +interpret(std\:\:string state): statement\[\]
+  #    @var %reg []mem $special commands from managers #0 #1 #2 ...   input values (for kernel commands)
+}
+
+statement: {
+  shape: class
+  -_type: statement_type
+  -_operands: statement\[\]
+  +ctor(statement\[\] operands)
+  +get_type: statement_type
+  +void\* execute(mm\*, rm\*, vm\*) \= \0
 }
 
 view: {

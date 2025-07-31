@@ -1,0 +1,33 @@
+if(var_1 > 0)
+then
+{
+	var_1 = 0;
+}
+else
+{
+	var_1 = var_2 + 1;
+}
+
+class statement {
+	private:
+		statement_type type;
+		statement[] operands;
+	public:
+		ctor(statement[] operands);
+		statement_type get_type;
+		void* execute(mm*, rm*, vm*) = 0;
+}
+
+
+executor{
+	_commands unordered_map<std::string, statement[]>;
+
+	1. took command
+	2. execute:
+
+		for( statement :: statement[]) {
+			statement.execute(_mm, _rm, _vm, #input int[]);
+		}
+}
+
+
