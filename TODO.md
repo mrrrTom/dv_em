@@ -10,4 +10,5 @@
 - [ ] change namespace emulator -> dv_em
 - [ ] add >> override for user commands on emulator
 - [ ] rewrite int* -> vector<int>
+- [ ] add error catching in main
 ### Archived
