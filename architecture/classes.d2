@@ -189,7 +189,7 @@ pregister: {
   +read(int\[\] \& value, unsigned short int output_offset, unsigned short int value_offset): bool
 }
 
-pregister -> registersManager: {
+pregister -> registers_manager: {
   target-arrowhead: {
     shape: diamond
     style.filled: true
@@ -211,8 +211,8 @@ executor -> emulator: {
   }
 }
 
-executor -> memoryManager: uses
-executor -> registersManager: uses
+executor -> memory_manager: uses
+executor -> registers_manager: uses
 
 translator: {
   shape: class
