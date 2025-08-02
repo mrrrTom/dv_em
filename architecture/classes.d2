@@ -232,6 +232,11 @@ statement: {
 
 view: {
   shape: class
+  -_registers_getter: std\:\:string\[\]
+  -_variables_getter: std\:\:string\[\]
+  -_memory_getter: std\:\:string\[\]
+
+  +print()
 }
 
 view -> emulator: {
