@@ -1,3 +1,3 @@
-# DV_EM
+# dv_em
 
-DV_EM is a program for emulating computing machines.
+dv_em is a program for emulating computing machines.
