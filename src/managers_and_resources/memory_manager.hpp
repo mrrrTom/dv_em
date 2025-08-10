@@ -1,6 +1,7 @@
 #ifndef MEMORY_MANAGER_DV_EM
 #define MEMORY_MANAGER_DV_EM
 #include <vector>
+#include "cell.hpp"
 
 namespace dv_em {
 	class memory_manager {
