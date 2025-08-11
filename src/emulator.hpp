@@ -10,12 +10,16 @@
 namespace emulator {
 	class emulator {
 		private:
-			kernelCommandsStore _commandsStore;
-			//view _view;
+			void (*) (memory_manager mm, registers_manager rm) _start_command;
+			executor _executor;
+			memory_manager _mm;
+			registers_manager _rm;
+			variables_manager _vm;
+			view _view;
 		public:
-			emulator(const char *configPath, const char *codePath);
-			void run();
-			void process(const char symb, int *args);
+			emulator(std::string configPath, std::string codePath);
+			void start();
+			void process(char symb, vector<int> args);
 			void stop();
 			~emulator();
 	};
