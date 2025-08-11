@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-namespace emulator {
+namespace dv_em {
 	class emulator {
 		private:
 			void (*) (memory_manager mm, registers_manager rm) _start_command;

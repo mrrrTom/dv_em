@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 	
-	emulator::emulator *e = new emulator::emulator(argv[1]);
+	dv_em::emulator *e = new dv_em::emulator(argv[1]);
 	bool run = true;
 	e->run();
 	while (run) {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 		std::string input;
 		std::cin >> input;
 		e->process(input[0], input.substr(2));
-		std::cout << "returned to maint" << std::endl;
+		std::cout << "returned to main" << std::endl;
 	}
 
 	e->stop(argv[1]);

@@ -2,7 +2,7 @@
 #include "configuration.hpp"
 #include "emulatorInstructionsStore.hpp"
 
-namespace emulator {
+namespace dv_em {
 	emulator::emulator(const char *path) {
 		_commandsStore = new kernelCommandsStore();
 		configuration config(path);

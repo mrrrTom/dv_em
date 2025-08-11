@@ -1,8 +1,7 @@
 #ifndef VARIABLE_SCHEME_META_DV_HPP
 #define VARIABLE_SCHEME_META_DV_HPP
 #include <string>
-
-	namespace emulator {
+	namespace dv_em {
 		struct variable_scheme {
 			std::string name;
 			std::string comment;

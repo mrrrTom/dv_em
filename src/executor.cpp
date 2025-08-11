@@ -1,7 +1,6 @@
 #include "executor.hpp"
 
-namespace emulator {
-
+namespace dv_em {
 	executor::executor(registersManager regManager, memoryManager memManager) {
 		_regManager = regManager;
 		_memManager = memManager;

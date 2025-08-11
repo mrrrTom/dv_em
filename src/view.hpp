@@ -5,10 +5,10 @@
 #include <fstream>
 #include <unordered_map>
 
-namespace emulator {
+namespace dv_em {
 	class view {
-		char vBorderSymb = '|';
-		char hBorderSymb = '-';
+		char v_border_symb = '|';
+		char h_border_symb = '-';
 		public:
 			std::string *input;
 			std::unordered_map<std::string, std::string*> registers;

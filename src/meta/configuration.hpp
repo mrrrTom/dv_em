@@ -9,7 +9,7 @@
 #include "register_scheme.hpp"
 #include "variable_scheme.hpp"
 
-namespace emulator {
+namespace dv_em {
 	struct configuration{
 		cell_scheme memory_model;
 		register_scheme* registers_model;

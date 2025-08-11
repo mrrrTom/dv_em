@@ -2,7 +2,7 @@
 #define REGISTER_SCHEME_META_DV_HPP
 #include <string>
 
-namespace emulator {
+namespace dv_em {
 	struct register_scheme {
 		std::string name;
 		std::string comment;

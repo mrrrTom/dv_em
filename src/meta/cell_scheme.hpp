@@ -1,7 +1,7 @@
 #ifndef REGISTER_SCHEME_META_DV_HPP
 #define REGISTER_SCHEME_META_DV_HPP
 	
-	namespace emulator {
+	namespace dv_em {
 		struct cell_scheme {
 			unsigned char adress_size;
 			unsigned short int command_first_bit;

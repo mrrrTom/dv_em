@@ -5,7 +5,7 @@
 #include "statement.hpp"
 #include <string>
 
-namespace emulator {
+namespace dv_em {
 	class executor {
 		private:
 			std::map<std::string, std::vector<statement>> _beat_command;

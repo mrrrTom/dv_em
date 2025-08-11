@@ -2,7 +2,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-namespace emulator {
+namespace dv_em {
 		view::view(std::string *input,
 					std::string *output,
 					std::unordered_map<std::string, std::string *> registers,
@@ -17,35 +17,35 @@ namespace emulator {
 		std::cout<<*this;
 	}
 
-	winsize getTerminalWindow();
+	winsize get_terminal_window();
 		
 	std::ostream &operator<<(std::ostream &stream, view v) {
-		winsize size = getTerminalWindow();
+		winsize size = get_terminal_window();
 		int width = (int)size.ws_col;
 		int hight = (int)size.ws_row;
 
 		for (int i = 0; i < width; i++) {
-			stream << v.hBorderSymb;
+			stream << v.h_border_symb;
 		}
 
 		std::cout << std::endl;
 
 		for (int i = 0; i < hight; i++) {
-			stream << v.vBorderSymb;
+			stream << v.v_border_symb;
 			for (int j = 0; j < (width - 2); j++) {
 				stream << ' ';
 			}
-			stream << v.vBorderSymb << std::endl;
+			stream << v.v_border_symb << std::endl;
 		}
 
 		for (int i = 0; i < width; i++) {
-			stream << v.hBorderSymb;
+			stream << v.h_border_symb;
 		}
 
 		return stream;
 	}
 
-	winsize getTerminalWindow() {
+	winsize get_terminal_window() {
 		struct winsize size;
 		ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
 		return size;
