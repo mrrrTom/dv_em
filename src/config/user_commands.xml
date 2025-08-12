@@ -1,0 +1,8 @@
+<commands>
+	<op name = "2" comment = "inc reg 1">
+		%reg_1 = %reg_1 + 1
+	</op>
+	<op name = "1" comment = "halt">
+		$halt()
+	</op>
+</commands>

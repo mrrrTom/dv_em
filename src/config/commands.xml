@@ -1,5 +1,0 @@
-<commands>
-	<op name = 'mov'>
-		'[@0] = [@]'
-	</op>
-</commands>

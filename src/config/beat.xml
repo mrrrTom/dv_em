@@ -1,6 +1,6 @@
 <beat>
-	<reg name = 'ra'>
-		@execute(@val)
-		@val = @val + 1	
-	</reg>
+	$mem_move()
+	curent_command: $mem_read(0, 3)
+	command_arguments: $mem_read(3, 24)
+	$execute(current_command, command_arguments)
 </beat>

@@ -1,0 +1,9 @@
+<memory_cell>
+	<address_size>4</address_size>
+	<command_first_bit>0</command_first_bit>
+	<command_last_bit>2</command_last_bit>
+	<arguments_first_bit>3</arguments_first_bit>
+	<arguments_last_bit>25</arguments_last_bit>
+	<fixed_operands_size>true</fixed_operands_size>
+	<operand_size>8</operand_size>
+</memory_cell>

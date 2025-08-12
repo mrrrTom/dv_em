@@ -1,0 +1,8 @@
+<commands>
+	<op name = 'run' key = 'r'>
+	while(1)
+	{
+		$beat()
+	}
+	</op>
+</commands>

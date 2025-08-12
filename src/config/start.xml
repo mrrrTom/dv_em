@@ -1,3 +1,3 @@
 <start>
-	<reg name ='ra'>0</reg>
+	<register name ="reg_1">0</reg>
 </start>

@@ -3,7 +3,7 @@
 	
 	namespace dv_em {
 		struct cell_scheme {
-			unsigned char adress_size;
+			unsigned char address_size;
 			unsigned short int command_first_bit;
 			unsigned short int command_last_bit;
 			unsigned short int arguments_firts_bit;

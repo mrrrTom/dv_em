@@ -1,0 +1,3 @@
+<registers>
+	<reg name="reg_1" comment = "first reg" size = '3' modes = '3' />
+</registers>
