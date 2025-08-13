@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+	<memory path='./memory.xml'/>
+	<registers path='./registers.xml'/>
+	<variables path='./variables.xml'/>
 	<start path='./start.xml'/>
 	<beat path='./beat.xml'/>
 	<emulator_commands path='./emulator_commands.xml'/>
-	<user_commands path='./user_commands.xml'/>
+	<kernel_commands path='./kernel_commands.xml'/>
 </config>

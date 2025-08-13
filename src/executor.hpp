@@ -8,7 +8,7 @@
 namespace dv_em {
 	class executor {
 		private:
-			std::map<std::string, std::vector<statement>> _kernel_command;
+			std::map<std::string, std::vector<statement>> _kernel_commands;
 			std::map<std::string, std::vector<stetement>> _emulator_commands;
 		public:
 			std::string execute(std::string command, vector<int> args);

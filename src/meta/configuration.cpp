@@ -1,12 +1,15 @@
 #include "configuration.hpp"
 
 namespace dv_em {
-	std::unordered_map<std::string, std::string> getStart(const char *path);
-	std::unordered_map<std::string, std::string> getBeat(const char *path);
-	std::unordered_map<std::string, std::string> getCommands(const char *path);
-
+	cell_scheme get_memory(std::string path);
+	std::vector<register_scheme> get_registers(std::string path);
+	std::vector<variable_scheme> get_variables(std::string path);
+	std::string get_start_state(std::string path);
+	std::string get_beat(std::string path);
+	std::map<std::string, std::string> get_em_commads(std::string path);
+	std::map<std::string, std::string> get_ke_commands(std::string path);
+	
 	configuration::configuration(const char *path) {
-		//ToDo: implement new config meta - only getting meta data, configuration can not hold resources
 		rapidxml::file<> xmlFile(path);
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
