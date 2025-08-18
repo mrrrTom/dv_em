@@ -2,7 +2,8 @@
 #include "emulator.hpp"
 //https://unix.stackexchange.com/a/617600
 //stty raw (without new line and etc) - stty sane https://www.ibm.com/docs/en/zvm/7.3?topic=commands-stty-set-display-terminal-options
-//
+// если комманд к stty недостаточно, то ищи про termios - это более низкоуровневый интерфейс
+//say hello to ncurses!
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		//ToDo exception
