@@ -1,4 +1,12 @@
 #include "configuration.hpp"
+const std::string cnfg_node_name = "config";
+const std::string mem_name = "memory";
+const std::string reg_name = "registers";
+const std::string var_name = "variables";
+const std::string beat_name = "beat";
+const std::string em_com_name = "emulator_commands";
+const std::string ker_com_name = "kernel_commands";
+const std::string path_name = "path";
 
 namespace dv_em {
 	cell_scheme get_memory(std::string path);
@@ -9,15 +17,16 @@ namespace dv_em {
 	std::map<std::string, std::string> get_em_commads(std::string path);
 	std::map<std::string, std::string> get_ke_commands(std::string path);
 	
-	configuration::configuration(const char *path) {
+	configuration::configuration(const std::string path) {
 		rapidxml::file<> xmlFile(path);
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		
-		rapidxml::xml_node<> *node = doc.first_node("config");
+		rapidxml::xml_node<> *cnfg_node = doc.first_node("config");
 
-		rapidxml::xml_node<> *asize = node -> first_node("asize");
-		adress_size = (unsigned char)(std::stoi(std::string(asize->value())));
+		rapidxml::xml_node<> *mem_node = cnfg_node -> first_node("memory");
+		rapidxml::xml_attribute<> *mem_path_attr = mem_node -> first_attribute("path");
+		std::string memory_path = std::string(memory->value())));
 
 		rapidxml::xml_node<> *csize = node -> first_node("csize");
 		cop_size = (unsigned char)(std::stoi(std::string(csize -> value())));

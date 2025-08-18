@@ -20,7 +20,7 @@ namespace dv_em {
 		std::map<std::string, std::string> emulator_commands;
 		std::map<std::string, std::string> kernel_commands;
 		
-		configuration(const char *path);
+		configuration(const std::string path);
 		~configuration();
 	};
 }
