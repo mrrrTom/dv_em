@@ -6,7 +6,7 @@
 			unsigned char address_size;
 			unsigned short int command_first_bit;
 			unsigned short int command_last_bit;
-			unsigned short int arguments_firts_bit;
+			unsigned short int arguments_first_bit;
 			unsigned short int arguments_last_bit;
 			bool fixed_operand_size;
 			unsigned short int operand_size;
