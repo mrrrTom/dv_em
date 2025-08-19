@@ -11,4 +11,5 @@
 - [ ] add >> override for user commands on emulator
 - [ ] rewrite int* -> vector<int>
 - [ ] add error catching in main
+- [ ] add move constructors and assign for structures
 ### Archived

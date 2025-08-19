@@ -56,7 +56,7 @@ namespace dv_em {
 }
 
 
-dv_em::cell_scheme get_memory(std::string path)
+cell_scheme get_memory(std::string path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -88,7 +88,15 @@ dv_em::cell_scheme get_memory(std::string path)
 	return mem;
 }
 
-std::vector<register_scheme> get_registers(std::string path);
+std::vector<register_scheme> get_registers(std::string path)
+{
+	rapidxml::file<> xmlFile(path);
+	rapidxml::xml_document<> doc;
+	doc.parse<0>(xmlFile.data());
+	rapidxml::xml_node<> *reg_node = doc.first_node(mem_root_name);
+	std::vector<dv_em::register_scheme> regs;
+}
+
 std::vector<variable_scheme> get_variables(std::string path);
 std::string get_start_state(std::string path);
 std::string get_beat(std::string path);
