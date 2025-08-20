@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "variable.hpp"
 
 namespace dv_em {
 		class variables_manager {

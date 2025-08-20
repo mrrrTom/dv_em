@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	
 	dv_em::emulator *e = new dv_em::emulator(argv[1]);
 	bool run = true;
-	e->run();
+	//e->run();
 	while (run) {
 		std::cout << "started circle" << std::endl;
 		//auto key = std::cin.get();
@@ -23,11 +23,12 @@ int main(int argc, char *argv[]) {
 		
 		std::string input;
 		std::cin >> input;
-		e->process(input[0], input.substr(2));
+		//vector<int>(1);
+		//e->process(input[0], input.substr(2));
 		std::cout << "returned to main" << std::endl;
 	}
 
-	e->stop(argv[1]);
+	//e->stop(argv[1]);
 }
 
 

@@ -1,8 +1,8 @@
 <commands>
-	<op name = 'run' key = 'r'>
+	<command name = 'r' comment = 'run'>
 	while(1)
 	{
 		$beat()
 	}
-	</op>
+	</command>
 </commands>

@@ -6,9 +6,9 @@
 namespace dv_em {
 	class memory_manager {
 		public:
-			bool set_cursor(vector<unsigned int> address);
-			bool write(vector<int> bits, unsigned short int start unsigned short int bits_count);
-			vector<int> read(unsigned short int start, unsigned short int bits_count);
+			bool set_cursor(std::vector<unsigned int> address);
+			bool write(std::vector<int> bits, unsigned short int start, unsigned short int bits_count);
+			std::vector<int> read(unsigned short int start, unsigned short int bits_count);
 			bool move_next();
 	};
 }

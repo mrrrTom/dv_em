@@ -1,5 +1,5 @@
-#ifndef REGISTER_SCHEME_META_DV_HPP
-#define REGISTER_SCHEME_META_DV_HPP
+#ifndef CELL_SCHEME_META_DV_HPP
+#define CELL_SCHEME_META_DV_HPP
 	
 	namespace dv_em {
 		struct cell_scheme {

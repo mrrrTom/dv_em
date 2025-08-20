@@ -2,6 +2,7 @@
 #define STATEMENT_DV_EM_HPP
 #include "statement.hpp"
 #include <vector>
+#include "statement_type.hpp"
 
 namespace dv_em {
 	struct statement {

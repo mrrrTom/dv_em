@@ -7,8 +7,8 @@
 namespace dv_em {
 	class translator {
 		public:
-			vector<statement> translate(std::string command);
-			vector<statement> inerpret(std::string state);
+			std::vector<statement> translate(std::string command);
+			std::vector<statement> inerpret(std::string state);
 	};
 }
 #endif

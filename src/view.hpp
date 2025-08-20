@@ -1,6 +1,6 @@
 #ifndef VIEW_DV_H
 #define VIEW_DV_H
-#include "configuration.hpp"
+#include "meta/configuration.hpp"
 #include <iostream>
 #include <fstream>
 #include <unordered_map>

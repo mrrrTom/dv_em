@@ -5,7 +5,7 @@
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
 #include <iostream>
-#incluede "cell_scheme.hpp"
+#include "cell_scheme.hpp"
 #include "register_scheme.hpp"
 #include "variable_scheme.hpp"
 #include <vector>
@@ -13,8 +13,8 @@
 namespace dv_em {
 	struct configuration{
 		cell_scheme memory_model;
-		vector<register_scheme> registers_model;
-		vector<variable_scheme> variables_model;
+		std::vector<register_scheme> registers_model;
+		std::vector<variable_scheme> variables_model;
 		std::string start_state;
 		std::string beat;
 		std::map<std::string, std::string> emulator_commands;
