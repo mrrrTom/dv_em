@@ -1,86 +1,87 @@
 #include "configuration.hpp"
-const std::string cnfg_node_name = "config";
+const char* cnfg_node_name = "config";
 
-const std::string mem_name = "memory";
-const std::string mem_root_name = "memory_cell";
-const std::string mem_addr_size_name = "address_size";
-const std::string mem_com_first_bit_name = "command_first_bit";
-const std::string mem_com_last_bit_name = "command_last_bit";
-const std::string mem_arg_first_bit_name = "arguments_first_bit";
-const std::string mem_arg_last_bit_name = "arguments_last_bit";
-const std::string mem_fixed_oper_name = "fixed_operands_size";
-const std::string mem_operand_size_name = "operand_size";
+const char* mem_name = "memory";
+const char* mem_root_name = "memory_cell";
+const char* mem_addr_size_name = "address_size";
+const char* mem_com_first_bit_name = "command_first_bit";
+const char* mem_com_last_bit_name = "command_last_bit";
+const char* mem_arg_first_bit_name = "arguments_first_bit";
+const char* mem_arg_last_bit_name = "arguments_last_bit";
+const char* mem_fixed_oper_name = "fixed_operands_size";
+const char* mem_operand_size_name = "operand_size";
 
-const std::string reg_name = "registers";
-const std::string reg_root_name = "registers";
-const std::string reg_entity_name = "reg";
-const std::string reg_name_attr = "name";
-const std::string reg_comment_attr = "comment";
-const std::string reg_size_attr = "size";
-const std::string reg_mode_attr = "modes";
+const char* reg_name = "registers";
+const char* reg_root_name = "registers";
+const char* reg_entity_name = "reg";
+const char* reg_name_attr = "name";
+const char* reg_comment_attr = "comment";
+const char* reg_size_attr = "size";
+const char* reg_mode_attr = "modes";
 
-const std::string var_name = "variables";
-const std::string var_root_name = "variables";
-const std::string var_entity_name = "var";
-const std::string var_name_attr = "name";
-const std::string var_comment_attr = "comment";
-const std::string var_size_attr = "size";
-const std::string var_depth_attr = "depth";
-const std::string var_visibility_attr = "is_visible";
-const std::string var_format_attr = "format_string";
+const char* var_name = "variables";
+const char* var_root_name = "variables";
+const char* var_entity_name = "var";
+const char* var_name_attr = "name";
+const char* var_comment_attr = "comment";
+const char* var_size_attr = "size";
+const char* var_depth_attr = "depth";
+const char* var_visibility_attr = "is_visible";
+const char* var_format_attr = "format_string";
 
-const std::string start_name = "start";
-const std::string start_root_name = "start";
+const char* start_name = "start";
+const char* start_root_name = "start";
 
-const std::string beat_name = "beat";
-const std::string beat_root_name = "beat";
+const char* beat_name = "beat";
+const char* beat_root_name = "beat";
 
-const std::string em_com_name = "emulator_commands";
-const std::string em_com_root_name = "commands";
-const std::string em_com_name_attr = "name";
-const std::string em_com_entity_name = "command";
+const char* em_com_name = "emulator_commands";
+const char* em_com_root_name = "commands";
+const char* em_com_name_attr = "name";
+const char* em_com_entity_name = "command";
 
-const std::string ke_com_name = "kernel_commands";
-const std::string ke_com_root_name = "commands";
-const std::string ke_com_name_attr = "name";
-const std::string ke_com_entity_name = "command";
+const char* ke_com_name = "kernel_commands";
+const char* ke_com_root_name = "commands";
+const char* ke_com_name_attr = "name";
+const char* ke_com_entity_name = "command";
 
-const std::string path_name = "path";
+const char* path_name = "path";
 
-cell_scheme get_memory(std::string path);
-std::vector<register_scheme> get_registers(std::string path);
-std::vector<variable_scheme> get_variables(std::string path);
-std::string get_start_state(std::string path);
-std::string get_beat(std::string path);
-std::map<std::string, std::string> get_em_commads(std::string path);
-std::map<std::string, std::string> get_ke_commands(std::string path);
-std::string get_node_path(rapidxml::xml_node<> *cnfg_node, std::string node_name);
+dv_em::cell_scheme get_memory(const char* path);
+std::vector<dv_em::register_scheme> get_registers(const char* path);
+std::vector<dv_em::variable_scheme> get_variables(const char* path);
+std::string get_start_state(const char* path);
+std::string get_beat(const char* path);
+std::map<std::string, std::string> get_em_commands(const char* path);
+std::map<std::string, std::string> get_ke_commands(const char* path);
+char* get_node_path(rapidxml::xml_node<> *cnfg_node, const char* node_name);
 
 namespace dv_em {
-	configuration::configuration(const std::string path) {
+	configuration::configuration(const std::string input_path) {
+		const char* path = input_path.c_str();
 		rapidxml::file<> xmlFile(path);
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		rapidxml::xml_node<> *cnfg_node = doc.first_node(cnfg_node_name);
-		std::string memory_path = get_node_path(cnfg_node, mem_name);
+		char* memory_path = get_node_path(cnfg_node, mem_name);
 		memory_model = get_memory(memory_path);
 		
-		std::string registers_path = get_node_path(cnfg_node, reg_name);
+		char* registers_path = get_node_path(cnfg_node, reg_name);
 		registers_model = get_registers(registers_path);
 
-		std::string variables_path = get_node_path(cnfg_node, var_name);
+		char* variables_path = get_node_path(cnfg_node, var_name);
 		variables_model = get_variables(variables_path);
 
-		std::string start_path = get_node_path(cnfg_node, start_name);
+		char* start_path = get_node_path(cnfg_node, start_name);
 		start_state = get_start_state(start_path);
 
-		std::string beat_path = get_node_path(cnfg_node, beat_name);
+		char* beat_path = get_node_path(cnfg_node, beat_name);
 		beat = get_beat(beat_path);
 
-		std::string em_commands_path = get_node_path(cnfg_node, em_com_name);
+		char* em_commands_path = get_node_path(cnfg_node, em_com_name);
 		emulator_commands = get_em_commands(em_commands_path);
 
-		std::string ke_commands_path = get_node_path(cnfg_node, ke_com_name);
+		char* ke_commands_path = get_node_path(cnfg_node, ke_com_name);
 		kernel_commands = get_ke_commands(ke_commands_path);
 	}
 
@@ -88,8 +89,7 @@ namespace dv_em {
 	} 
 }
 
-
-cell_scheme get_memory(std::string path)
+dv_em::cell_scheme get_memory(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -121,7 +121,7 @@ cell_scheme get_memory(std::string path)
 	return mem;
 }
 
-std::vector<register_scheme> get_registers(std::string path)
+std::vector<dv_em::register_scheme> get_registers(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -138,11 +138,11 @@ std::vector<register_scheme> get_registers(std::string path)
 			rapidxml::xml_attribute<> *comment_attr = cur_reg -> first_attribute(reg_comment_attr);
 			scheme.comment = comment_attr -> value();
 
-			rapdixml::xml_attribute<> *size_attr = cur_reg -> first_attribute(reg_size_attr);
+			rapidxml::xml_attribute<> *size_attr = cur_reg -> first_attribute(reg_size_attr);
 			scheme.size = (unsigned char)(std::stoi(std::string(size_attr -> value())));
 
 			rapidxml::xml_attribute<> *allowed_modes_attr = cur_reg -> first_attribute(reg_mode_attr);
-			scheme.user_allowed_modes = (unsignded char)(std::stoi(std::string(allowed_modes_attr -> value())));
+			scheme.user_allowed_modes = (unsigned char)(std::stoi(std::string(allowed_modes_attr -> value())));
 
 			regs.push_back(scheme);
 			cur_reg = cur_reg -> next_sibling();
@@ -151,7 +151,7 @@ std::vector<register_scheme> get_registers(std::string path)
 	return regs;
 }
 
-std::vector<variable_scheme> get_variables(std::string path)
+std::vector<dv_em::variable_scheme> get_variables(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -169,11 +169,11 @@ std::vector<variable_scheme> get_variables(std::string path)
 			rapidxml::xml_attribute<> *comment_attr = cur_var -> first_attribute(var_comment_attr);
 			scheme.comment = comment_attr -> value();
 
-			rapdixml::xml_attribute<> *size_attr = cur_var -> first_attribute(var_size_attr);
+			rapidxml::xml_attribute<> *size_attr = cur_var -> first_attribute(var_size_attr);
 			scheme.size = (unsigned char)(std::stoi(std::string(size_attr -> value())));
 
-			rapidxml::xml_attribute<> *depth_attr = cur_var -> first_attribute(var_mode_attr);
-			scheme.depth = (unsignded char)(std::stoi(std::string(depth_attr -> value())));
+			rapidxml::xml_attribute<> *depth_attr = cur_var -> first_attribute(var_depth_attr);
+			scheme.depth = (unsigned char)(std::stoi(std::string(depth_attr -> value())));
 
 			rapidxml::xml_attribute<> *visibility_attr = cur_var -> first_attribute(var_visibility_attr);
 			scheme.is_visible = (unsigned char)(std::stoi(std::string(visibility_attr -> value())));
@@ -188,7 +188,7 @@ std::vector<variable_scheme> get_variables(std::string path)
 	return vars;
 }
 
-std::string get_start_state(std::string path)
+std::string get_start_state(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -198,7 +198,7 @@ std::string get_start_state(std::string path)
 	return std::string(start_node -> value());
 }
 
-std::string get_beat(std::string path)
+std::string get_beat(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -208,7 +208,7 @@ std::string get_beat(std::string path)
 	return std::string(beat_node -> value());
 }
 
-std::map<std::string, std::string> get_em_commads(std::string path)
+std::map<std::string, std::string> get_em_commands(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -229,7 +229,7 @@ std::map<std::string, std::string> get_em_commads(std::string path)
 	return commands;
 }
 
-std::map<std::string, std::string> get_ke_commands(std::string path)
+std::map<std::string, std::string> get_ke_commands(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
@@ -250,7 +250,7 @@ std::map<std::string, std::string> get_ke_commands(std::string path)
 	return commands;
 }
 
-std::string get_node_path(rapidxml::xml_node<> *cnfg_node, std::string node_name)
+char* get_node_path(rapidxml::xml_node<> *cnfg_node, const char* node_name)
 {
 	rapidxml::xml_node<> *node = cnfg_node -> first_node(node_name);
 	rapidxml::xml_attribute<> *path_attr = node -> first_attribute(path_name);
