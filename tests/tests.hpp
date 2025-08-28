@@ -1,3 +1,5 @@
+#ifndef TEST_DV_EM_HPP
+#define TEST_DV_EM_HPP
 #include <string>
 
 using namespace std;
@@ -25,3 +27,4 @@ namespace dv_em_test
 			virtual string execute();
 	};
 }
+#endif
