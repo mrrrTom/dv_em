@@ -1,8 +1,0 @@
-<commands>
-	<command name = "2" comment = "inc reg 1">
-		%reg_1 = %reg_1 + 1
-	</command>
-	<command name = "1" comment = "halt">
-		$halt()
-	</command>
-</commands>

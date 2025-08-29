@@ -2,9 +2,20 @@
 #include "configuration.hpp"
 
 using namespace std;
+using namespace dv_em;
 
 namespace dv_em_test
 {
+	test_result no_config_file();
+	test_result empty_config_file();
+	test_result memory_parsing();
+	test_result registers_parsing();
+	test_result variables_parsing();
+	test_result start_parsing();
+	test_result beat_parsing();
+	test_result emulator_parsing();
+	test_result kernel_parsing();
+
 	string configuration_test::get_name()
 	{
 		return "Configuration tests";
@@ -12,55 +23,109 @@ namespace dv_em_test
 
 	string configuration_test::execute()
 	{
-		string result = "checked: ";
-		result += no_config_file() + " ";
-		result += empty_config_file() + " ";
-		result += memory_parsing() + " ";
-		result += registers_parsing() + " ";
-		result += variables_parsing() + " ";
-		result += start_parsing() + " ";
-		result += beat_parsing() + " ";
-		result += emulator_parsing() + " ";
-		result += kernel_parsing() + " ";
+		string result = "";
+		vector<test_result (*) ()> config_tests;
+		config_tests.push_back(&no_config_file);
+		config_tests.push_back(&empty_config_file);
+		config_tests.push_back(&memory_parsing);
+		config_tests.push_back(&registers_parsing);
+		config_tests.push_back(&variables_parsing);
+		config_tests.push_back(&start_parsing);
+		config_tests.push_back(&beat_parsing);
+		config_tests.push_back(&emulator_parsing);
+		config_tests.push_back(&kernel_parsing);
+		
+		for (auto test:config_tests)
+		{
+			auto tr = test();
+			auto output = tr.output;
+			if (tr.success)
+			{
+				result += ("\033[32m" + tr.output + "\033[0m");
+			}
+			else
+			{
+				result += ("\033[31m" + tr.output + "\033[0m");
+			}
+
+			result += '\n';
+		}
+	
+		return result;
 	}
 
 	// files level checks
-	string no_config_file()
+	test_result no_config_file()
 	{
-		configuration config ("unreal path");
-		
+		test_result r;
+		dv_em::configuration config ("unreal path");
+		r.success = !config.initialized;
+		r.output = "empty configuration file check";
+		return r;
 	}
 
-	string empty_config_file()
+	test_result empty_config_file()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
 	// parsing meta datas
-	string memory_parsing()
+	test_result memory_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string registers_parsing()
+	test_result registers_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string variables_parsing()
+	test_result variables_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string start_parsing()
+	test_result start_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string beat_parsing()
+	test_result beat_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string emulator_parsing()
+	test_result emulator_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 
-	string kernel_parsing()
+	test_result kernel_parsing()
 	{
+		test_result r;
+		r.success = false;
+		r.output = "default";
+		return r;
 	}
 }

@@ -16,7 +16,7 @@ int main()
 	for (int i = 0; i < tests.size(); i++)
 	{
 		test* t = tests[i];
-		cout << "executes test: " << t -> get_name() << " with result: "
+		cout << "executes test: " << t -> get_name() << " with result:\n"
 			<< t -> execute() << endl;
 
 		delete(t);

@@ -19,7 +19,8 @@ namespace dv_em {
 		std::string beat;
 		std::map<std::string, std::string> emulator_commands;
 		std::map<std::string, std::string> kernel_commands;
-		
+		bool initialized;
+
 		configuration(const std::string path);
 		~configuration();
 	};

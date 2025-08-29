@@ -1,4 +1,7 @@
 #include "configuration.hpp"
+#include <filesystem>
+using namespace std;
+
 const char* cnfg_node_name = "config";
 
 const char* mem_name = "memory";
@@ -58,6 +61,10 @@ char* get_node_path(rapidxml::xml_node<> *cnfg_node, const char* node_name);
 
 namespace dv_em {
 	configuration::configuration(const std::string input_path) {
+		initialized = false;
+		
+		if (!filesystem::exists(input_path)) return;
+		
 		const char* path = input_path.c_str();
 		rapidxml::file<> xmlFile(path);
 		rapidxml::xml_document<> doc;
@@ -83,6 +90,8 @@ namespace dv_em {
 
 		char* ke_commands_path = get_node_path(cnfg_node, ke_com_name);
 		kernel_commands = get_ke_commands(ke_commands_path);
+		
+		initialized = true;
 	}
 
 	configuration::~configuration() {

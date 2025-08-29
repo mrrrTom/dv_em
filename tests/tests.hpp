@@ -20,6 +20,13 @@ namespace dv_em_test
 			}
 	};
 
+	class test_result
+	{
+		public:
+			bool success;
+			string output;
+	};
+
 	class configuration_test : public test
 	{
 		public:
