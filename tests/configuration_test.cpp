@@ -41,11 +41,11 @@ namespace dv_em_test
 			auto output = tr.output;
 			if (tr.success)
 			{
-				result += ("\033[32m" + tr.output + "\033[0m");
+				result += ("\t\033[32m" + tr.output + "\033[0m");
 			}
 			else
 			{
-				result += ("\033[31m" + tr.output + "\033[0m");
+				result += ("\t\033[31m" + tr.output + "\033[0m");
 			}
 
 			result += '\n';
@@ -60,15 +60,24 @@ namespace dv_em_test
 		test_result r;
 		dv_em::configuration config ("unreal path");
 		r.success = !config.initialized;
-		r.output = "empty configuration file check";
+		r.output = "no configuration file check";
 		return r;
 	}
 
 	test_result empty_config_file()
 	{
 		test_result r;
-		r.success = false;
-		r.output = "default";
+		dv_em::configuration config("./tests/empty.xml");
+		
+		r.success = config.initialized &&
+					!&config.registers_model &&
+					!&config.variables_model &&
+					!&config.start_state &&
+					!&config.beat &&
+					!&config.emulator_commands &&
+					!&config.kernel_commands;
+		
+		r.output = "empty configuration file check";
 		return r;
 	}
 
