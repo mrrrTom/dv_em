@@ -255,13 +255,90 @@ namespace dv_em_test
 			return err_r;
 		}
 	}
+	
+	void create_variables_file(string file_name, vector<variable_scheme> vars)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<variables>";
+		for (auto var:vars)
+		{
+			xml_data += ("<var name=\"" + var.name);
+			xml_data += "\" ";
+			xml_data += ("comment=\"" + var.comment);
+			xml_data += "\" ";
+			xml_data += ("size=\'" + to_string(var.size));
+			xml_data += "\' ";
+			xml_data += ("depth=\'" + to_string(var.depth));
+			xml_data += "\' ";
+			xml_data += ("is_visible=\'" + to_string(var.is_visible));
+			xml_data += "\' ";
+			xml_data += ("format_string=\'" + var.format_string);
+			xml_data += "\' />";
+		}
+		xml_data += "</variables>";
+		fs << xml_data;
+		fs.close();
+	}
 
 	test_result variables_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string variables_file_name = "./tests/variables_parsing_test_variables_config.xml";
+			variable_scheme v1 {
+				"var1",
+				"first created variable",
+				12,
+				2,
+				1,
+				"{*(&%#$"
+			};
+			variable_scheme v2 {
+				"var2",
+				"second created variable",
+				18,
+				5,
+				0,
+				"113423%$^"
+			};
+			create_variables_file(variables_file_name, vector<variable_scheme> {v1, v2});
+			string config_file_name = "./tests/variables_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+			config_file_data += "<config> <variables path=\'";
+			config_file_data += variables_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "variables parsing check";
+			configuration config(config_file_name);
+
+			r.success = config.initialized &&
+						(config.variables_model[0].name == v1.name) &&
+						(config.variables_model[0].comment == v1.comment) &&
+						(config.variables_model[0].size == v1.size) &&
+						(config.variables_model[0].depth == v1.depth) &&
+						(config.variables_model[0].is_visible == v1.is_visible) &&
+						(config.variables_model[0].format_string == v1.format_string) &&
+						(config.variables_model[1].name == v2.name) &&
+						(config.variables_model[1].comment == v2.comment) &&
+						(config.variables_model[1].size == v2.size) &&
+						(config.variables_model[1].depth == v2.depth) &&
+						(config.variables_model[1].is_visible == v2.is_visible) &&
+						(config.variables_model[1].format_string == v2.format_string);
+			remove(config_file_name.c_str());
+			remove(variables_file_name.c_str());
+			return r;
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("registers parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
 	}
 
 	test_result start_parsing()
