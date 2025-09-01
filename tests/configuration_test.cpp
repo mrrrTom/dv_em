@@ -1,5 +1,7 @@
 #include "tests.hpp"
 #include "configuration.hpp"
+#include <fstream>
+#include <cstdio>
 
 using namespace std;
 using namespace dv_em;
@@ -57,37 +59,127 @@ namespace dv_em_test
 	// files level checks
 	test_result no_config_file()
 	{
-		test_result r;
-		dv_em::configuration config ("unreal path");
-		r.success = !config.initialized;
-		r.output = "no configuration file check";
-		return r;
+		try 
+		{
+			test_result r;
+			dv_em::configuration config ("unreal path");
+			r.success = !config.initialized;
+			r.output = "no configuration file check";
+			return r;
+		}
+		catch (...)
+		{
+			test_result err_r;
+			err_r.success = false;
+			err_r.output = "no configuration file check got execution error";
+			return err_r;
+		}
 	}
 
 	test_result empty_config_file()
 	{
-		test_result r;
-		dv_em::configuration config("./tests/empty.xml");
+		try
+		{
+			test_result r;
+			string empty_file_name = "./tests/empty.xml";
+			ofstream empty_file (empty_file_name);
+			empty_file.close();
+			dv_em::configuration config(empty_file_name);
 		
-		r.success = config.initialized &&
-					!&config.registers_model &&
-					!&config.variables_model &&
-					!&config.start_state &&
-					!&config.beat &&
-					!&config.emulator_commands &&
-					!&config.kernel_commands;
+			r.success = config.initialized &&
+						(!config.memory_model) &&
+						(config.registers_model.size() == 0) &&
+						(config.variables_model.size() == 0) &&
+						(config.start_state == "") &&
+						(config.beat == "") &&
+						(config.emulator_commands.size() == 0) &&
+						(config.kernel_commands.size() == 0);
 		
-		r.output = "empty configuration file check";
-		return r;
+			r.output = "empty configuration file check";
+			remove(empty_file_name.c_str());
+			return r;
+		}
+		catch (...)
+		{
+			test_result err_r;
+			err_r.success = false;
+			err_r.output = "empty configuration file check got execution error";
+			return err_r;
+		}
+	}
+
+	void create_memory_file(string file_name, cell_scheme data)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<memory_cell>";
+		xml_data += ("<address_size>" + to_string(data.address_size));
+		xml_data += "</address_size>";
+		xml_data += ("<command_first_bit>" + to_string(data.command_first_bit));
+		xml_data += "</command_first_bit>";
+		xml_data += ("<command_last_bit>" + to_string(data.command_last_bit));
+		xml_data += "</command_last_bit>";
+		xml_data += ("<arguments_first_bit>" + to_string(data.arguments_first_bit));
+		xml_data += "</arguments_first_bit>";
+		xml_data += ("<arguments_last_bit>" + to_string(data.arguments_last_bit));
+		xml_data += "</arguments_last_bit>";
+		xml_data += ("<fixed_operand_size>" + to_string(data.fixed_operand_size));
+		xml_data += "</fixed_operand_size>";
+		xml_data += ("<operand_size>" + to_string(data.operand_size));
+		xml_data += "</operand_size>";
+		xml_data += "</memory_cell>";
+		fs << xml_data;
+		fs.close();
 	}
 
 	// parsing meta datas
 	test_result memory_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string memory_file_name = "./tests/memory_parsing_test_memory_config.xml";
+			cell_scheme mm {
+				4,
+				17,
+				29,
+				12,
+				222,
+				0,
+				34
+			};
+			create_memory_file(memory_file_name, mm); 
+			
+			string config_file_name = "./tests/memory_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+			config_file_data += "<config> <memory path=\'";
+			config_file_data += memory_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "memory parsing check";
+			configuration config(config_file_name);
+			
+			r.success = config.initialized &&
+						(config.memory_model -> address_size == mm.address_size) &&
+						(config.memory_model -> command_first_bit == mm.command_first_bit) &&
+						(config.memory_model -> command_last_bit == mm.command_last_bit) &&
+						(config.memory_model -> arguments_first_bit == mm.arguments_first_bit) &&
+						(config.memory_model -> arguments_last_bit == mm.arguments_last_bit) &&
+						(config.memory_model -> fixed_operand_size == mm.fixed_operand_size) &&
+						(config.memory_model -> operand_size == mm.operand_size);
+			remove(memory_file_name.c_str());
+			remove(config_file_name.c_str());
+			return r;
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("memory parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
 	}
 
 	test_result registers_parsing()
@@ -138,3 +230,4 @@ namespace dv_em_test
 		return r;
 	}
 }
+

@@ -12,7 +12,7 @@
 
 namespace dv_em {
 	struct configuration{
-		cell_scheme memory_model;
+		cell_scheme* memory_model { nullptr };
 		std::vector<register_scheme> registers_model;
 		std::vector<variable_scheme> variables_model;
 		std::string start_state;

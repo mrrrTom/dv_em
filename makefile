@@ -13,3 +13,7 @@ rapidxml: $(RAPIDXML_SOURCES)
 test: 
 	g++ $(TEST_FILES) $(EM_EX_MAIN_FILES) -std=c++20 -o testrun -I./src/ -I./src/meta/ -I./src/managers_and_resources/ -I../rapidxml/rapidxml-1.13/
 	./testrun
+
+debug_test:
+	g++ -g $(TEST_FILES) $(EM_EX_MAIN_FILES) -std=c++20 -o testrun -I./src/ -I./src/meta/ -I./src/managers_and_resources/ -I../rapidxml/rapidxml-1.13/
+	gdb ./testrun

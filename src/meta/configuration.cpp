@@ -11,7 +11,7 @@ const char* mem_com_first_bit_name = "command_first_bit";
 const char* mem_com_last_bit_name = "command_last_bit";
 const char* mem_arg_first_bit_name = "arguments_first_bit";
 const char* mem_arg_last_bit_name = "arguments_last_bit";
-const char* mem_fixed_oper_name = "fixed_operands_size";
+const char* mem_fixed_oper_name = "fixed_operand_size";
 const char* mem_operand_size_name = "operand_size";
 
 const char* reg_name = "registers";
@@ -50,7 +50,7 @@ const char* ke_com_entity_name = "command";
 
 const char* path_name = "path";
 
-dv_em::cell_scheme get_memory(const char* path);
+dv_em::cell_scheme* get_memory(const char* path);
 std::vector<dv_em::register_scheme> get_registers(const char* path);
 std::vector<dv_em::variable_scheme> get_variables(const char* path);
 std::string get_start_state(const char* path);
@@ -70,62 +70,104 @@ namespace dv_em {
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		rapidxml::xml_node<> *cnfg_node = doc.first_node(cnfg_node_name);
+		if (!cnfg_node)
+		{
+			initialized = true;
+			return;
+		}
+
 		char* memory_path = get_node_path(cnfg_node, mem_name);
+		if (!memory_path)
+		{
+			initialized = true;
+			return;
+		}
 		memory_model = get_memory(memory_path);
 		
 		char* registers_path = get_node_path(cnfg_node, reg_name);
+		if (!registers_path)
+		{
+			initialized = true;
+			return;
+		}
 		registers_model = get_registers(registers_path);
 
 		char* variables_path = get_node_path(cnfg_node, var_name);
+		if (!variables_path)
+		{
+			initialized = true;
+			return;
+		}
 		variables_model = get_variables(variables_path);
 
 		char* start_path = get_node_path(cnfg_node, start_name);
+		if (!start_path)
+		{
+			initialized = true;
+			return;
+		}
 		start_state = get_start_state(start_path);
 
 		char* beat_path = get_node_path(cnfg_node, beat_name);
+		if (!beat_path)
+		{
+			initialized = true;
+			return;
+		}
 		beat = get_beat(beat_path);
 
 		char* em_commands_path = get_node_path(cnfg_node, em_com_name);
+		if (!em_commands_path)
+		{
+			initialized = true;
+			return;
+		}
 		emulator_commands = get_em_commands(em_commands_path);
 
 		char* ke_commands_path = get_node_path(cnfg_node, ke_com_name);
+		if (!ke_commands_path)
+		{
+			initialized = true;
+			return;
+		}
 		kernel_commands = get_ke_commands(ke_commands_path);
 		
 		initialized = true;
 	}
 
 	configuration::~configuration() {
+	//	if (memory_model) delete(memory_model);
 	} 
 }
 
-dv_em::cell_scheme get_memory(const char *path)
+dv_em::cell_scheme* get_memory(const char *path)
 {
 	rapidxml::file<> xmlFile(path);
 	rapidxml::xml_document<> doc;
 	doc.parse<0>(xmlFile.data());
 	rapidxml::xml_node<> *mem_node = doc.first_node(mem_root_name);
-	dv_em::cell_scheme mem;
+	auto mem = new dv_em::cell_scheme();
 	
 	rapidxml::xml_node<> *addr_size = mem_node -> first_node(mem_addr_size_name);
-	mem.address_size = (unsigned char)(std::stoi(std::string(addr_size -> value())));
+	mem -> address_size = (unsigned char)(std::stoi(std::string(addr_size -> value())));
 	
 	rapidxml::xml_node<> *com_first_bit = mem_node -> first_node(mem_com_first_bit_name);
-	mem.command_first_bit = (unsigned short int)(std::stoi(std::string(com_first_bit -> value())));
+	mem -> command_first_bit = (unsigned short int)(std::stoi(std::string(com_first_bit -> value())));
 
 	rapidxml::xml_node<> *com_last_bit = mem_node -> first_node(mem_com_last_bit_name);
-	mem.command_last_bit = (unsigned short int)(std::stoi(std::string(com_last_bit -> value())));
+	mem -> command_last_bit = (unsigned short int)(std::stoi(std::string(com_last_bit -> value())));
 
 	rapidxml::xml_node<> *arg_first_bit = mem_node -> first_node(mem_arg_first_bit_name);
-	mem.arguments_first_bit = (unsigned short int)(std::stoi(std::string(arg_first_bit -> value())));
+	mem -> arguments_first_bit = (unsigned short int)(std::stoi(std::string(arg_first_bit -> value())));
 
 	rapidxml::xml_node<> *arg_last_bit = mem_node -> first_node(mem_arg_last_bit_name);
-	mem.arguments_last_bit = (unsigned short int)(std::stoi(std::string(arg_last_bit -> value())));
+	mem -> arguments_last_bit = (unsigned short int)(std::stoi(std::string(arg_last_bit -> value())));
 
 	rapidxml::xml_node<> *fixed_operand_size = mem_node -> first_node(mem_fixed_oper_name);
-	mem.fixed_operand_size = (bool)(std::stoi(std::string(fixed_operand_size -> value())));
+	mem -> fixed_operand_size = (bool)(std::stoi(std::string(fixed_operand_size -> value())));
 
 	rapidxml::xml_node<> *operand_size = mem_node -> first_node(mem_operand_size_name);
-	mem.operand_size = (unsigned short int)(std::stoi(std::string(operand_size -> value())));
+	mem -> operand_size = (unsigned short int)(std::stoi(std::string(operand_size -> value())));
 
 	return mem;
 }
@@ -262,6 +304,7 @@ std::map<std::string, std::string> get_ke_commands(const char *path)
 char* get_node_path(rapidxml::xml_node<> *cnfg_node, const char* node_name)
 {
 	rapidxml::xml_node<> *node = cnfg_node -> first_node(node_name);
+	if (!node) return nullptr;
 	rapidxml::xml_attribute<> *path_attr = node -> first_attribute(path_name);
 	return path_attr->value();
 }
