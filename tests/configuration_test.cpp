@@ -181,13 +181,79 @@ namespace dv_em_test
 			return err_r;
 		}
 	}
+	
+	void create_registers_file(string file_name, vector<register_scheme> registers)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<registers>";
+		for (auto reg:registers)
+		{
+			xml_data += ("<reg name=\"" + reg.name);
+			xml_data += "\" ";
+			xml_data += ("comment=\"" + reg.comment);
+			xml_data += "\" ";
+			xml_data += ("size=\'" + to_string(reg.size));
+			xml_data += "\' ";
+			xml_data += ("modes=\'" + to_string(reg.user_allowed_modes));
+			xml_data += "\' />";
+		}
+		xml_data += "</registers>";
+		fs << xml_data;
+		fs.close();
+	}
 
 	test_result registers_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string registers_file_name = "./tests/registers_parsing_test_registers_config.xml";
+			register_scheme r1 {
+				"first_register",
+				"this is first created register",
+				10,
+				2
+			};
+			register_scheme r2 {
+				"second_register",
+				"this is second created register",
+				12,
+				1
+			};
+			
+			create_registers_file(registers_file_name, vector<register_scheme> {r1, r2});
+			string config_file_name = "./tests/registers_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+			config_file_data += "<config> <registers path=\'";
+			config_file_data += registers_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "registers parsing check";
+			configuration config(config_file_name);
+
+			r.success = config.initialized &&
+						(config.registers_model[0].name == r1.name) &&
+						(config.registers_model[0].comment == r1.comment) &&
+						(config.registers_model[0].size == r1.size) &&
+						(config.registers_model[0].user_allowed_modes) &&
+						(config.registers_model[1].name == r2.name) &&
+						(config.registers_model[1].comment == r2.comment) &&
+						(config.registers_model[1].size == r2.size) &&
+						(config.registers_model[1].user_allowed_modes);
+			remove(config_file_name.c_str());
+			remove(registers_file_name.c_str());
+			return r;
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("registers parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
 	}
 
 	test_result variables_parsing()

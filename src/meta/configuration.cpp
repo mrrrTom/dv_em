@@ -70,69 +70,29 @@ namespace dv_em {
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		rapidxml::xml_node<> *cnfg_node = doc.first_node(cnfg_node_name);
-		if (!cnfg_node)
-		{
-			initialized = true;
-			return;
-		}
+		initialized = true;
+		if (!cnfg_node)	return;
 
 		char* memory_path = get_node_path(cnfg_node, mem_name);
-		if (!memory_path)
-		{
-			initialized = true;
-			return;
-		}
-		memory_model = get_memory(memory_path);
-		
+		if (memory_path) memory_model = get_memory(memory_path);
+
 		char* registers_path = get_node_path(cnfg_node, reg_name);
-		if (!registers_path)
-		{
-			initialized = true;
-			return;
-		}
-		registers_model = get_registers(registers_path);
+		if (registers_path)	registers_model = get_registers(registers_path);
 
 		char* variables_path = get_node_path(cnfg_node, var_name);
-		if (!variables_path)
-		{
-			initialized = true;
-			return;
-		}
-		variables_model = get_variables(variables_path);
+		if (variables_path)	variables_model = get_variables(variables_path);
 
 		char* start_path = get_node_path(cnfg_node, start_name);
-		if (!start_path)
-		{
-			initialized = true;
-			return;
-		}
-		start_state = get_start_state(start_path);
+		if (start_path)	start_state = get_start_state(start_path);
 
 		char* beat_path = get_node_path(cnfg_node, beat_name);
-		if (!beat_path)
-		{
-			initialized = true;
-			return;
-		}
-		beat = get_beat(beat_path);
+		if (beat_path) beat = get_beat(beat_path);
 
 		char* em_commands_path = get_node_path(cnfg_node, em_com_name);
-		if (!em_commands_path)
-		{
-			initialized = true;
-			return;
-		}
-		emulator_commands = get_em_commands(em_commands_path);
+		if (em_commands_path) emulator_commands = get_em_commands(em_commands_path);
 
 		char* ke_commands_path = get_node_path(cnfg_node, ke_com_name);
-		if (!ke_commands_path)
-		{
-			initialized = true;
-			return;
-		}
-		kernel_commands = get_ke_commands(ke_commands_path);
-		
-		initialized = true;
+		if (ke_commands_path) kernel_commands = get_ke_commands(ke_commands_path);
 	}
 
 	configuration::~configuration() {
