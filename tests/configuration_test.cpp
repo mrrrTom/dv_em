@@ -340,21 +340,95 @@ namespace dv_em_test
 			return err_r;
 		}
 	}
+	
+	void create_start_file(string file_name, string start_state)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<start>";
+		xml_data += start_state;
+		xml_data += "</start>";
+		fs << xml_data;
+		fs.close();
+	}
 
 	test_result start_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string start_file_name = "./tests/start_parsing_test_start_config.xml";
+			string s = "this is start state";
+			create_start_file(start_file_name, s);
+			string config_file_name = "./tests/start_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encofing=\"UTF-8\"?>";
+			config_file_data += "<config> <start path=\'";
+			config_file_data += start_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "start state parsing check";
+			configuration config(config_file_name);
+
+			r.success = config.initialized &&
+						(config.start_state == s);
+			remove(config_file_name.c_str());
+			remove(start_file_name.c_str());
+			return r;
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("start parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
+	}
+
+	void create_beat_file(string file_name, string beat)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<beat>";
+		xml_data += beat;
+		xml_data += "</beat>";
+		fs << xml_data;
+		fs.close();
 	}
 
 	test_result beat_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string beat_file_name = "./tests/beat_parsing_test_beat_config.xml";
+			string b = "this is beat";
+			create_beat_file(beat_file_name, b);
+			string config_file_name = "./tests/beat_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encofing=\"UTF-8\"?>";
+			config_file_data += "<config> <beat path=\'";
+			config_file_data += beat_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "beat parsing check";
+			configuration config(config_file_name);
+
+			r.success = config.initialized &&
+						(config.beat == b);
+			remove(config_file_name.c_str());
+			remove(beat_file_name.c_str());
+			return r;
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("beat parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
 	}
 
 	test_result emulator_parsing()
