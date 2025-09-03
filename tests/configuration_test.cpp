@@ -431,20 +431,150 @@ namespace dv_em_test
 		}
 	}
 
+	void create_emulator_file(string file_name, map<string, string> commands)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<commands>";
+		for (auto c:commands)
+		{
+			xml_data += ("<command name=\"" + c.first);
+			xml_data += "\" ";
+			xml_data += "comment=\"";
+			xml_data += "comment";
+			xml_data += "\" >";
+			xml_data += c.second;
+			xml_data += "</command>";
+		}
+		xml_data += "</commands>";
+		fs << xml_data;
+		fs.close();
+	}
+
 	test_result emulator_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string emulator_file_name ="./tests/emulator_parsing_test_emulator_commands_config.xml";
+			map<string, string> commands 
+			{
+				{
+					"first", "text of the first command"
+				},
+				{
+					"second", "text of the second command"
+				}
+			};
+			create_emulator_file(emulator_file_name, commands);
+			string config_file_name = "./tests/emulator_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encofing=\"UTF-8\"?>";
+			config_file_data += "<config> <emulator_commands path=\'";
+			config_file_data += emulator_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "emulator commands parsing check";
+			configuration config(config_file_name);
+
+			bool same_pairs = true;
+			for (auto p:commands)
+			{
+				if (p.second != config.emulator_commands[p.first])
+				{
+					same_pairs = false;
+				}
+			}
+
+			r.success = config.initialized &&
+						(config.emulator_commands.size() == commands.size()) &&
+						same_pairs;
+			remove(config_file_name.c_str());
+			remove(emulator_file_name.c_str());
+			return r;
+
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("emulator commands parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
+	}
+
+	void create_kernel_file(string file_name, map<string, string> commands)
+	{
+		ofstream fs(file_name);
+		string xml_data = "<commands>";
+		for (auto c:commands)
+		{
+			xml_data += ("<command name=\"" + c.first);
+			xml_data += "\" ";
+			xml_data += "comment=\"";
+			xml_data += "comment";
+			xml_data += "\" >";
+			xml_data += c.second;
+			xml_data += "</command>";
+		}
+		xml_data += "</commands>";
+		fs << xml_data;
+		fs.close();
 	}
 
 	test_result kernel_parsing()
 	{
-		test_result r;
-		r.success = false;
-		r.output = "default";
-		return r;
+		try
+		{
+			test_result r;
+			string kernel_file_name ="./tests/kernel_parsing_test_kernel_commands_config.xml";
+			map<string, string> commands 
+			{
+				{
+					"first", "text of the first command"
+				},
+				{
+					"second", "text of the second command"
+				}
+			};
+			create_kernel_file(kernel_file_name, commands);
+			string config_file_name = "./tests/kernel_parsing_test_config.xml";
+			ofstream config_file (config_file_name);
+			string config_file_data = "<?xml version=\"1.0\" encofing=\"UTF-8\"?>";
+			config_file_data += "<config> <kernel_commands path=\'";
+			config_file_data += kernel_file_name;
+			config_file_data += "\'/> </config>";
+			config_file << config_file_data;
+			config_file.close();
+			r.output = "kernel commands parsing check";
+			configuration config(config_file_name);
+
+			bool same_pairs = true;
+			for (auto p:commands)
+			{
+				if (p.second != config.kernel_commands[p.first])
+				{
+					same_pairs = false;
+				}
+			}
+
+			r.success = config.initialized &&
+						(config.kernel_commands.size() == commands.size()) &&
+						same_pairs;
+			remove(config_file_name.c_str());
+			remove(kernel_file_name.c_str());
+			return r;
+
+		}
+		catch (exception& e)
+		{
+			test_result err_r;
+			err_r.success = false;
+			string msg = e.what();
+			err_r.output = ("kernel parsing check got execution error: " + msg + '\n');
+			return err_r;
+		}
 	}
 }
 
