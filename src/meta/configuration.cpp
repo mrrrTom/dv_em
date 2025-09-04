@@ -61,6 +61,9 @@ char* get_node_path(rapidxml::xml_node<> *cnfg_node, const char* node_name);
 
 namespace dv_em {
 	configuration::configuration(const std::string input_path) {
+#ifdef VERBOSE
+		cout << "started configuration parsing" << endl;
+#endif
 		initialized = false;
 		
 		if (!filesystem::exists(input_path)) return;
@@ -93,6 +96,10 @@ namespace dv_em {
 
 		char* ke_commands_path = get_node_path(cnfg_node, ke_com_name);
 		if (ke_commands_path) kernel_commands = get_ke_commands(ke_commands_path);
+	
+#ifdef VERBOSE
+		cout << "configuration parsing got to the end" << endl;
+#endif
 	}
 
 	configuration::~configuration() {

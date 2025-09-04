@@ -14,7 +14,9 @@ int main(int argc, char *argv[]) {
 	bool run = true;
 	//e->run();
 	while (run) {
+#ifdef VERBOSE
 		std::cout << "started circle" << std::endl;
+#endif
 		//auto key = std::cin.get();
 		/*if (key == 3) {
 			std::cout << "CTLR + C pressed";
@@ -25,7 +27,9 @@ int main(int argc, char *argv[]) {
 		std::cin >> input;
 		//vector<int>(1);
 		//e->process(input[0], input.substr(2));
+#ifdef VERBOSE
 		std::cout << "returned to main" << std::endl;
+#endif
 	}
 
 	//e->stop(argv[1]);

@@ -10,7 +10,9 @@ namespace dv_em {
 	}
 
 	void emulator::start() {
+#ifdef VERBOSE
 		std::cout << "run emulator" << std::endl;
+#endif
 	}
 
 	//void emulator::stop(std::string path) {
@@ -23,6 +25,8 @@ namespace dv_em {
 	//}
 
 	emulator::~emulator() {
+#ifdef VERBOSE
 		std::cout<< "emulator destruction" << std::endl;
+#endif
 	}
 }
