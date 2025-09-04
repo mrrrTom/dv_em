@@ -5,8 +5,7 @@ TEST_FILES := ${shell find ./tests/ -name "*.*pp"}
 EM_EX_MAIN_FILES := ${shell find ./src/ -name "*.*pp" ! -name "main.cpp"}
 
 release: $(EM_FILES)
-	g++ $(EM_FILES) -std=c++20 -o emulator -I $(RAPIDXML_FOLDER)
-
+	g++ $(EM_FILES) -std=c++20 -o emulator -I $(RAPIDXML_FOLDER) -Wpedantic -Wall -Wextra
 verbose: $(EM_FILES)
 	g++ $(EM_FILES) -std=c++20 -o emulator -I $(RAPIDXML_FOLDER) -DVERBOSE
 
